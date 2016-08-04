@@ -1,0 +1,331 @@
+    <!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+
+<struts>
+    <!--<constant name="struts.action.extension" value="blb" />-->
+    <!--<constant name="struts.devMode" value="true"/>-->
+    <package name="pglobal" namespace="/" extends="struts-default,json-default,jasperreports-default">
+        
+        <interceptors>
+            <interceptor name="EpicAccesControl" class="com.epic.interceptor.AccessControlInterceptor" />              
+            <interceptor-stack name="EpicStack">
+                <interceptor-ref name="EpicAccesControl"/> 
+                <interceptor-ref name="workflow"/>
+                <interceptor-ref name="defaultStack"/>
+                <interceptor-ref name="fileUpload"/>
+                <interceptor-ref name="modelDriven"/>
+                <interceptor-ref name="basicStack"/>
+
+            </interceptor-stack>
+        </interceptors>
+        
+        <default-interceptor-ref name="EpicStack"/> 
+                   
+        <global-results>
+            <result name="noaccessPage" type="chain" >LogoutloginCall.action</result>
+            <!--<result name="loginpage">/login.jsp</result>-->
+            <!--<result name="acccontroler">/defaultaccesscontroler.jsp</result>-->
+            <result name="multiaccess">/pages/multiaccess.jsp</result>
+            <result name="pwchangedloginAgain">/pages/pwchangedloginAgain.jsp</result>
+            <result name="erropage"></result>
+        </global-results>  
+        
+    </package>
+
+    <package name="Epic_Login_DEFAULT" namespace="/" extends="struts-default">
+        <default-action-ref name="DefLogin"/>
+        <action name="DefLogin" class="com.epic.login.action.UserLogin" >
+            <result>/pages/login/Login.jsp</result>
+        </action>
+    </package>
+     
+     
+    <package name="Epic_login_manage" namespace="/" extends="pglobal">           
+        <action name="*loginCall" class="com.epic.login.action.UserLogin" method="{1}">
+            <result name="success">/pages/login/Home.jsp</result>
+            <result name="login">/pages/login/Login.jsp</result>           
+        </action>
+                
+        <action name="homeCall" class="com.epic.login.action.UserLogin" method="homeFunction">
+            <result name="success">/pages/login/Home.jsp</result>          
+        </action>
+    </package>
+        
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Start User Management ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->       
+    <package name="Epic_user_manage" namespace="/" extends="pglobal">
+                  
+        <action name="*usrMng"    class="com.epic.cla.user.action.UserManagement"   method="{1}"> 
+            <result name="success">/pages/userManagement/userManagement.jsp</result>        
+            <result name="update">/pages/msgFrag.jsp</result>
+            <result name="add">/pages/msgFrag.jsp</result>
+            <result name="list" type="json"></result>           
+            <result name="find" type="json"></result>              
+            <result name="delete"  type="json"  ></result>        
+        </action>
+        <action name="*usrprofileMng"    class="com.epic.cla.user.action.UsrProfileManagement"   method="{1}"> 
+            <result name="success">/pages/userManagement/userProfileManagement.jsp</result>        
+            <result name="update">/pages/msgFrag.jsp</result>
+            <result name="add">/pages/msgFrag.jsp</result>
+            <result name="list" type="json"></result>           
+            <result name="find" type="json"></result>              
+            <result name="delete"  type="json"  ></result>   
+            <result name="loaddata"  type="json"  ></result>      
+        </action>
+        
+        <action name="*changePassword" class="com.epic.cla.user.action.ChangePassword" method="{1}">
+            <result name="success">/pages/userManagement/changePassword.jsp</result> 
+            <result name="message">/pages/msgFrag.jsp</result>          
+        </action>
+               
+    </package>   
+    <package name="Epic_SMS_manage" namespace="/" extends="pglobal">
+                  
+        <action name="*smstempprofileMng"    class="com.epic.cla.sms.action.SmsProfile"   method="{1}"> 
+            <result name="success">/pages/smsManagement/smsProfile.jsp</result>        
+            <result name="update">/pages/msgFrag.jsp</result>
+            <result name="add">/pages/msgFrag.jsp</result>
+            <result name="list" type="json"></result>           
+            <result name="find" type="json"></result>              
+            <result name="delete"  type="json"  ></result>        
+        </action>
+        <action name="*smstempMng"    class="com.epic.cla.sms.action.SmsTemplate"   method="{1}"> 
+            <result name="success">/pages/smsManagement/smsTemplate.jsp</result>        
+            <result name="update">/pages/msgFrag.jsp</result>
+            <result name="add">/pages/msgFrag.jsp</result>
+            <result name="list" type="json"></result>           
+            <result name="find" type="json"></result>              
+            <result name="delete"  type="json"  ></result>   
+            <result name="loaddata"  type="json"  ></result>   
+            <result name="templates" >/pages/smsManagement/smsTemplatePopUp.jsp</result>   
+        </action>
+        
+               
+    </package>
+    <package name="Epic_customer_manage" namespace="/" extends="pglobal">
+                  
+        <action name="*cusMng"    class="com.epic.cla.customer.action.CustomerManagement"   method="{1}"> 
+            <result name="success">/pages/customerManagement/customerManagement.jsp</result>        
+            <result name="add">/pages/msgFrag.jsp</result>
+            <result name="update">/pages/msgFrag.jsp</result>
+            <result name="find" type="json"></result>   
+            <result name="list" type="json"></result> 
+            <result name="delete"  type="json"  ></result> 
+            <result name="cusiqry"  type="json"  ></result>
+            <result name="acciqry"  type="json"  ></result> 
+            <result name="merchantLoad"  type="json"  ></result> 
+             
+        </action>
+        
+        <action name="*reciMng"    class="com.epic.cla.customer.action.RecipientManagement"   method="{1}"> 
+            <result name="success">/pages/customerManagement/recipientManagement.jsp</result> 
+            <result name="add">/pages/msgFrag.jsp</result> 
+            <result name="update">/pages/msgFrag.jsp</result>
+            <result name="list" type="json"></result>  
+            <result name="find" type="json"></result> 
+            <result name="delete"  type="json"  ></result>
+            <result name="recipent" >/pages/customerManagement/recipientPopup.jsp</result>     
+                 
+        </action>
+        
+        <action name="*cusriskMng"    class="com.epic.cla.customer.action.CustomerRiskProfileManagement"   method="{1}"> 
+            <result name="success">/pages/customerManagement/customerRiskProfileManagement.jsp</result>        
+            <result name="add">/pages/msgFrag.jsp</result>
+            <result name="list" type="json"></result>
+            <result name="find" type="json"></result> 
+            <result name="update">/pages/msgFrag.jsp</result>
+            <result name="delete"  type="json"  ></result> 
+        </action>
+               
+    </package> 
+    
+    <package name="Epic_callcener_manage" namespace="/" extends="pglobal">
+                  
+        <action name="*callcenterMng"    class="com.epic.cla.callcenter.action.CallCenterManagement"   method="{1}"> 
+            <result name="success">/pages/callCenterManagement/callCenterManagement.jsp</result>
+            <result name="list" type="json"></result> 
+         
+        </action>
+    </package>   
+    
+    <package name="Epic_channel_manage" namespace="/" extends="pglobal">
+                  
+        <action name="*channelMng"    class="com.epic.cla.channel.action.ChannelManagement"   method="{1}"> 
+            <result name="success">/pages/channelManagement/channelManagement.jsp</result>        
+            <result name="add">/pages/msgFrag.jsp</result>
+            <result name="update">/pages/msgFrag.jsp</result>
+            <result name="find" type="json"></result>   
+            <result name="list" type="json"></result> 
+            <result name="delete"  type="json"  ></result>  
+        </action>
+        <action name="*listnnerMng"    class="com.epic.cla.channel.action.ListenerManagement"   method="{1}"> 
+            <result name="success">/pages/channelManagement/listenerManagement.jsp</result>        
+            <result name="add">/pages/msgFrag.jsp</result>
+            <result name="update">/pages/msgFrag.jsp</result>
+            <result name="find" type="json"></result>   
+            <result name="list" type="json"></result> 
+            <result name="delete"  type="json"  ></result>  
+        </action>
+        <action name="*listenerProMng"    class="com.epic.cla.channel.action.ListenerProfileManagement"   method="{1}"> 
+            <result name="success">/pages/channelManagement/listenerProManagement.jsp</result> 
+            <result name="update">/pages/msgFrag.jsp</result>
+            <result name="find" type="json"></result>   
+            <result name="list" type="json"></result>
+        </action>
+        
+    </package>
+    
+        
+    
+    <package name="LogManagement" extends="pglobal"   namespace="/">                 
+        <action name="*logDownloadMng" class="com.epic.cla.log.action.LogDownload" method="{1}">
+            <result name="success">/pages/logManagement/downloadLogfiles.jsp</result>
+            <result name="list" type="json" ></result>            
+            <result name="download" type="stream">
+                <param name="contentType">application/octet-stream</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">attachment;filename="${fileName}"</param>
+                <param name="bufferSize">4096</param>
+            </result>
+               
+            <result name="backupanddownload" type="stream">
+                <param name="contentType">application/octet-stream</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">attachment;filename="${fileName}"</param>
+                <param name="bufferSize">4096</param>
+            </result>         
+        </action>
+   
+        
+    </package> 
+      
+    <package name="Epic_configuration_manage" namespace="/" extends="pglobal">
+                  
+        <action name="*pwPolicyMng"    class="com.epic.cla.configuration.action.PasswordPolicy"   method="{1}"> 
+            <result name="success">/pages/configurationManagement/passwordPolicy.jsp</result> 
+            <result name="update">/pages/msgFrag.jsp</result>
+            <result name="find" type="json"></result>   
+        </action>
+        
+        <action name="*systemParaMng"    class="com.epic.cla.configuration.action.SystemParameters"   method="{1}"> 
+            <result name="success">/pages/configurationManagement/systemParameters.jsp</result>  
+            <result name="update">/pages/msgFrag.jsp</result>
+            <result name="find" type="json"></result> 
+        </action>
+     
+       
+        
+    </package> 
+
+
+
+    <package name="TransactionManagement" extends="pglobal"   namespace="/">                 
+        <action name="*useractivityMng" class="com.epic.cla.transactionmgt.action.UserActivityAudit" method="{1}">
+            <result name="success">/pages/transactionManagement/userActivityAudit.jsp</result>
+            <result name="list" type="json" ></result>               
+        </action>   
+        
+        <action name="*txnMng" class="com.epic.cla.transactionmgt.action.ViewTransaction" method="{1}">
+            <result name="success">/pages/transactionManagement/viewTransaction.jsp</result>
+            <result name="list" type="json" ></result>  
+            <result name="viewpopup">/pages/transactionManagement/viewTxnHistory.jsp</result>
+            <result name="viewsmspopup">/pages/transactionManagement/viewTxnSmsHistory.jsp</result>
+            <result name="txnreport" type="jasper">            
+                <param name="location">/resources/jasper/txnTable.jasper</param>
+                <param name="dataSource">reportdatalist</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">parameterMap</param>
+                <param name="contentDisposition">attachment;filename=TxnReport.pdf</param>
+            </result>     
+            <result name="canceled" type="json"></result>      
+        </action>   
+        <action name="*TransectionHistory" class="com.epic.cla.transactionmgt.action.TransactionHistory" method="{1}">
+            <result name="success">/pages/transactionManagement/viewTxnHistory.jsp</result>
+            <result name="listhistory" type="json"></result>
+        </action>
+        <action name="*TransectionSmsHistory" class="com.epic.cla.transactionmgt.action.TransactionSmsHistory" method="{1}">
+            <result name="success">/pages/transactionManagement/viewTxnSmsHistory.jsp</result>
+            <result name="listhistory" type="json"></result>
+        </action>
+        <action name="*cusTMng" class="com.epic.cla.transactionmgt.action.CustomerTransction" method="{1}">
+            <result name="success">/pages/transactionManagement/customerTransaction.jsp</result>
+            <result name="add">/pages/msgFrag.jsp</result>
+            <result name="update">/pages/msgFrag.jsp</result>
+            <result name="find" type="json"/>
+            <result name="list" type="json"/>
+            <result name="delete" type="json"/>
+            <result name="account" type="json"></result>
+        </action>
+        
+    </package> 
+  
+    <!--System Alert Management-->
+    <package name="Epic_sys_alert_manage" namespace="/" extends="pglobal">
+                  
+        <action name="*systemnotifiMng"    class="com.epic.cla.systemAlert.action.ViewSystemNotification"   method="{1}"> 
+            <result name="success">/pages/systemAlertManagement/viewSystemNotification.jsp</result>     
+            <result name="list" type="json" ></result> 
+            <result name="excelreportsystemalerts" type="stream">
+                <param name="contentType">"application/vnd.ms-excel"</param>
+                <param name="inputName">excelStream</param>
+                <param name="contentDisposition">attachment;filename="system_alerts_report.xlsx"</param>
+                <param name="bufferSize">61440</param>
+            </result>
+            <result name="zip" type="stream">
+                <param name="contentDisposition">attachment;filename="syatem_alert_report.zip"</param>
+                <param name="contentType">application/octet-stream</param>
+                <param name="inputName">zipStream</param>
+                <param name="bufferSize">61440</param>
+            </result>  
+        </action>
+        
+        <action name="*operationnotifiMng"    class="com.epic.cla.systemAlert.action.ViewOperationNotification"   method="{1}"> 
+            <result name="success">/pages/systemAlertManagement/viewOperationNotification.jsp</result>     
+            <result name="list" type="json" ></result>  
+            <result name="send" type="json"></result> 
+            <result name="downloadxl" type="stream">
+                <param name="contentType">"application/vnd.ms-excel"</param>
+                <param name="inputName">excelStream</param>
+                <param name="contentDisposition">attachment;filename="operation_alerts_report.xlsx"</param>
+                <param name="bufferSize">61440</param>
+            </result>
+            <result name="zip" type="stream">
+                <param name="contentDisposition">attachment;filename="operation_alert_report.zip"</param>
+                <param name="contentType">application/octet-stream</param>
+                <param name="inputName">zipStream</param>
+                <param name="bufferSize">61440</param>
+            </result> 
+        </action>
+        
+        <action name="*monitorstatusMng"    class="com.epic.cla.systemAlert.action.ViewCurrentStatus"   method="{1}"> 
+            <result name="success">/pages/systemAlertManagement/viewCurrentStatus.jsp</result>     
+            <result name="list" type="json" ></result> 
+            <result name="esstatus" type="json" ></result>
+        </action>
+     
+               
+    </package> 
+    
+    <package name="Epic_bulk_msg_manage" namespace="/" extends="pglobal">
+        <action name="*bulkMsgMng"    class="com.epic.cla.bulksender.action.BulkSenderManagement"   method="{1}"> 
+            <result name="success">/pages/bulkSenderManagement/bulkSenderManagement.jsp</result>     
+            <result name="list" type="json" ></result>  
+            <result name="add">/pages/msgFrag.jsp</result> 
+            <result name="delete" type="json" ></result>
+            <result name="update">/pages/msgFrag.jsp</result> 
+        </action>
+               
+    </package> 
+
+
+
+</struts>
+    
+    
+    
+    
+    
+    
+    
+    

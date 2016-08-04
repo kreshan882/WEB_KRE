@@ -1,0 +1,42 @@
+
+#####################################
+## start 1.00 (25022016)------     ##
+#####################################
+	
+1) show variables like '%wait_timeout%';   50->500
+
+### 2016-05-30###
+DB CLA_MT_SECTION deleted 0903 System Operations
+CLA_MT_SECTION_TASK deleted 0903 
+CLA_USER_PROFILE_PRIVILAGE deleted 0903 
+
+
+//22062016
+SECTION/MODULE table
+Transection->Transaction
+
+SECTION
+    1) reg new user ->System Users
+    2) reg new user profile -> User Profiles
+
+    3) reg new custumer -> Customer Registration
+    4) cus risk profile-> Customer Risk Profiles
+    5) view transection -> Transaction Explorer
+    6) Customer Transaction -> Create Transaction
+    7) Operation Notofication -> System Operations
+
+Responce code
+15.Invalid currency code
+39.Account is dormant
+40.Account is restricted
+41.Account is closed
+42.Invalid effective date 
+57.Maximum withdrawal posted 
+70.Invalid account type
+
+D0.Invalid amount 
+D1.Incorrect PIN
+D2.PIN tries exceeded
+
+
+
